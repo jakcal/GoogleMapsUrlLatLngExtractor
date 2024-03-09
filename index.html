@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Google Maps URL Lat Lng Extractor">
+    <meta name="author" content="Yassine">
+    <title>Google Maps URL Lat Lng Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 90svh;
+            padding: 10px;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px); /* 22px to account for padding and border */
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Include padding and border in width */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hint {
+            font-style: italic;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="maps-url">Enter Google Maps URL:</label>
+        <input type="text" id="maps-url" name="maps-url">
+        <button onclick="extractLatLng()">Extract Lat Lng</button>
+        <p class="hint">Example URL format: https://www.google.com/maps/@40.7128,-74.0060,10z</p>
+        <br>
+        <div id="latLngInputs" class="hidden">
+            <label for="lat">Latitude:</label>
+            <input type="text" id="lat" name="lat" readonly>
+            <button onclick="copyToClipboard('lat')">Copy</button>
+            <br>
+            <label for="lng">Longitude:</label>
+            <input type="text" id="lng" name="lng" readonly>
+            <button onclick="copyToClipboard('lng')">Copy</button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Made with love by <a href="https://github.com/jakcal">Yassine</a>
+    </div>
+
+    <script>
+        function extractLatLng() {
+            var url = document.getElementById('maps-url').value;
+            var regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+            var match = url.match(regex);
+            if (match) {
+                var lat = match[1];
+                var lng = match[2];
+                document.getElementById('lat').value = lat;
+                document.getElementById('lng').value = lng;
+                document.getElementById('latLngInputs').classList.remove('hidden');
+            } else {
+                alert('Invalid Google Maps URL. Please enter a valid URL.');
+            }
+        }
+
+        function copyToClipboard(id) {
+            var textField = document.getElementById(id);
+            textField.select();
+            textField.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+        }
+    </script>
+</body>
+</html>
